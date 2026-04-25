@@ -2,6 +2,7 @@ Installation
 - npm init -y
 - npm install express
 - npm install nodemon typescript @types/express ts-node --dev
+- npx tsc --init 
 
 Running
-- npx tsc --init 
+- npm run dev
