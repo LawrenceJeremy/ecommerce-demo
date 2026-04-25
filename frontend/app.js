@@ -1,3 +1,5 @@
+let allProducts = [];
+
 window.addEventListener("DOMContentLoaded", loadProducts);
 
 // GET - load products
@@ -5,6 +7,9 @@ async function loadProducts() {
   try {
     const res = await fetch("http://localhost:3000/products");
     const data = await res.json();
+
+    allProducts = data; // ✅ for search feature
+
     const table = document.getElementById("productTable");
     table.innerHTML = "";
 
@@ -16,8 +21,15 @@ async function loadProducts() {
         <td>${p.product_name}</td>
         <td>₱${p.price}</td>
         <td>
-          <button style="background-color: #4CAF50; color: white; border: none; padding: 8px 16px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;" onclick="editProduct(${p.id}, '${p.product_name}', ${p.price})">✏️ Edit</button>
-          <button style="background-color: #f44336; color: white; border: none; padding: 8px 16px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;" onclick="deleteProduct(${p.id})">🗑 Delete</button>
+          <button style="background-color: #4CAF50; color: white; border: none; padding: 8px 16px; font-size: 16px; margin: 4px 2px; cursor: pointer;" 
+            onclick="editProduct(${p.id}, '${p.product_name}', ${p.price})">
+            ✏️ Edit
+          </button>
+
+          <button style="background-color: #f44336; color: white; border: none; padding: 8px 16px; font-size: 16px; margin: 4px 2px; cursor: pointer;" 
+            onclick="deleteProduct(${p.id})">
+            🗑 Delete
+          </button>
         </td>
       `;
 
@@ -60,7 +72,7 @@ async function editProduct(id, currentName, currentPrice) {
   if (!newName || !newPrice) return;
 
   await fetch(`http://localhost:3000/products/${id}`, {
-    method: "PUT", // or PATCH depende sa backend mo
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
@@ -83,4 +95,42 @@ async function deleteProduct(id) {
   });
 
   loadProducts();
+}
+
+// 🔍 SEARCH / FILTER (FRONTEND ONLY)
+function filterProducts() {
+  const keyword = document
+    .getElementById("searchInput")
+    .value
+    .toLowerCase();
+
+  const filtered = allProducts.filter((p) =>
+    p.product_name.toLowerCase().includes(keyword)
+  );
+
+  const table = document.getElementById("productTable");
+  table.innerHTML = "";
+
+  filtered.forEach((p) => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${p.id}</td>
+      <td>${p.product_name}</td>
+      <td>₱${p.price}</td>
+      <td>
+        <button style="background-color: #4CAF50; color: white; border: none; padding: 8px 16px; font-size: 16px; margin: 4px 2px; cursor: pointer;" 
+          onclick="editProduct(${p.id}, '${p.product_name}', ${p.price})">
+          ✏️ Edit
+        </button>
+
+        <button style="background-color: #f44336; color: white; border: none; padding: 8px 16px; font-size: 16px; margin: 4px 2px; cursor: pointer;" 
+          onclick="deleteProduct(${p.id})">
+          🗑 Delete
+        </button>
+      </td>
+    `;
+
+    table.appendChild(row);
+  });
 }

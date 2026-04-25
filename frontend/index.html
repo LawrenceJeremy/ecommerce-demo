@@ -17,6 +17,12 @@
         <button onclick="addProduct()">Add</button>
       </div>
 
+      <input
+        id="searchInput"
+        placeholder="Search product name..."
+        oninput="filterProducts()"
+      />
+
       <div class="table-card">
         <table>
           <thead>
