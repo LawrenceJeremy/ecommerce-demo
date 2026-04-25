@@ -16,8 +16,8 @@ async function loadProducts() {
         <td>${p.product_name}</td>
         <td>₱${p.price}</td>
         <td>
-          <button onclick="editProduct(${p.id}, '${p.product_name}', ${p.price})">✏️ Edit</button>
-          <button onclick="deleteProduct(${p.id})">🗑 Delete</button>
+          <button style="background-color: #4CAF50; color: white; border: none; padding: 8px 16px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;" onclick="editProduct(${p.id}, '${p.product_name}', ${p.price})">✏️ Edit</button>
+          <button style="background-color: #f44336; color: white; border: none; padding: 8px 16px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;" onclick="deleteProduct(${p.id})">🗑 Delete</button>
         </td>
       `;
 
